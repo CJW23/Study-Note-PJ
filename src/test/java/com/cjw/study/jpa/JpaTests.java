@@ -30,10 +30,10 @@ public class JpaTests {
     @Transactional
     @Rollback(value = false)
     void 테스트_데이터() {
-        for(int i=0; i<1000; i++) {
+        for(int i=0; i<10; i++) {
             UUID uuid = UUID.randomUUID();
             Team team = new Team("team"+uuid.toString());
-            for(int j=0; j<50; j++) {
+            for(int j=0; j<5; j++) {
                 new Member("member"+uuid.toString(),j, team);
             }
             em.persist(team);
@@ -117,9 +117,42 @@ public class JpaTests {
 
         for (Team fetch1 : fetch) {
             List<Member> members = fetch1.getMembers();
-            members.get(0);
+            members.forEach(m -> System.out.println(m.getAge()));
         }
 
         assertNotNull(fetch);
+    }
+
+    /**
+     * batch_size = 2인 경우
+     * teams 특정 index의 member를 호출시 다음 index의 members도 호출한다
+     * 하지만 for를 사용하지않고 2씩 더하며 직접 index를 지정해 호출하면 batch로 가져오지 않았기에 호출마다 쿼리가 나가게된다
+     */
+    @Test
+    @Transactional(readOnly = true)
+    void batch_size_테스트() {
+        queryFactory = new JPAQueryFactory(em);
+        QTeam team= QTeam.team;
+        List<Team> teams = queryFactory
+                .select(team)
+                .from(team)
+                .fetch();
+        //IN (0,1) 쿼리
+        List<Member> members1 = teams.get(0).getMembers();
+        System.out.println(members1);
+
+        //IN (2,3) 쿼리
+        List<Member> members2 = teams.get(2).getMembers();
+        System.out.println(members2);
+
+        //IN (4,5) 쿼리
+        List<Member> members3 = teams.get(4).getMembers();
+        System.out.println(members3);
+
+        //IN (6,7) 쿼리
+        List<Member> members4 = teams.get(6).getMembers();
+        System.out.println(members4);
+
+        assertNotNull(teams);
     }
 }
