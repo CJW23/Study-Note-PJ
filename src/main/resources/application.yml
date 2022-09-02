@@ -13,7 +13,9 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        default_batch_fetch_size: 2
 
 logging:
   level:
     org.hibernate.SQL: debug
+    org.hibernate.type: trace
