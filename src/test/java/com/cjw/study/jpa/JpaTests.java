@@ -4,7 +4,6 @@ import com.cjw.study.jpa.entity.Member;
 import com.cjw.study.jpa.entity.QMember;
 import com.cjw.study.jpa.entity.QTeam;
 import com.cjw.study.jpa.entity.Team;
-import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import java.util.List;
 import java.util.UUID;
 

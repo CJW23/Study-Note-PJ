@@ -1,0 +1,19 @@
+= REST Docs 문서 만들기 (글의 제목)
+backtony.github.io(부제)
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs // 문서에 표기되는 코드들의 하이라이팅을 highlightjs를 사용
+:toc: left // toc (Table Of Contents)를 문서의 좌측에 두기
+:toclevels: 2
+:sectlinks:
+
+[[RestDocsTests]]
+== RestDocsTests
+
+[[Test1]]
+=== Test1
+operation::rest-docs-tests/test1[snippets='curl-request,http-request,request-parameters,http-response,response-body,response-fields']
+
+[[Test2]]
+=== Test2
+operation::rest-docs-tests/test2[snippets='curl-request,http-request,http-response,response-body,response-body-beneath-test3,response-fields-beneath-tests,response-fields-beneath-test4,response-fields']
