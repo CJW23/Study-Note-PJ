@@ -32,12 +32,22 @@
       <button @click="clickReactiveRefState">ClickReactiveRefState</button>
       <button @click="clickArrState">ClickArrState</button>
     </div>
+
+    <div>
+      <ComputedPractice/>
+    </div>
+    <div>
+      <VMemoPractice/>
+    </div>
   </div>
 </template>
 <script>
 import {isRef, onMounted, reactive, ref} from "vue";
+import ComputedPractice from '@/components/ComputedPractice.vue';
+import VMemoPractice from "@/components/VMemoPractice.vue";
 
 export default {
+  components: {VMemoPractice, ComputedPractice},
   /**setUp() hook은 Composition API 사용을 위한 진입점 역할
    * 컴포넌트 인스턴스가 *생성되기전*에 호출
    * 첫번째 매개변수에 props올 수 있음
