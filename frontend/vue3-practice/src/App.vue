@@ -39,15 +39,23 @@
     <div>
       <VMemoPractice/>
     </div>
+    <div>
+      <EventPractice/>
+    </div>
+    <div>
+      <VModelPractice/>
+    </div>
   </div>
 </template>
 <script>
 import {isRef, onMounted, reactive, ref} from "vue";
 import ComputedPractice from '@/components/ComputedPractice.vue';
 import VMemoPractice from "@/components/VMemoPractice.vue";
+import EventPractice from "@/components/EventPractice.vue";
+import VModelPractice from "@/components/VModelPractice.vue";
 
 export default {
-  components: {VMemoPractice, ComputedPractice},
+  components: {VModelPractice, EventPractice, VMemoPractice, ComputedPractice},
   /**setUp() hook은 Composition API 사용을 위한 진입점 역할
    * 컴포넌트 인스턴스가 *생성되기전*에 호출
    * 첫번째 매개변수에 props올 수 있음
@@ -72,6 +80,8 @@ export default {
       value: '123456',
       disabled: true
     });
+    //아래처럼 object인 ref 접근 가능
+    console.log(attrs.value.type);
 
     const changeMsg = () => {
       reactiveMsg.value = reactiveMsg.value + "!";
