@@ -45,6 +45,10 @@
     <div>
       <VModelPractice/>
     </div>
+    <div>
+      <h1>WatchPractice</h1>
+      <WatchPractice/>
+    </div>
   </div>
 </template>
 <script>
@@ -53,9 +57,10 @@ import ComputedPractice from '@/components/ComputedPractice.vue';
 import VMemoPractice from "@/components/VMemoPractice.vue";
 import EventPractice from "@/components/EventPractice.vue";
 import VModelPractice from "@/components/VModelPractice.vue";
+import WatchPractice from "@/components/WatchPractice.vue";
 
 export default {
-  components: {VModelPractice, EventPractice, VMemoPractice, ComputedPractice},
+  components: {WatchPractice, VModelPractice, EventPractice, VMemoPractice, ComputedPractice},
   /**setUp() hook은 Composition API 사용을 위한 진입점 역할
    * 컴포넌트 인스턴스가 *생성되기전*에 호출
    * 첫번째 매개변수에 props올 수 있음
