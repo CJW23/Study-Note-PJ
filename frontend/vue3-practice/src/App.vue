@@ -54,6 +54,10 @@
       <PropsPractice />
     </div>
     <div>
+      <h1>SlotPractice</h1>
+      <ButtonGroup />
+    </div>
+    <div>
       <h1>Provide-Inject Practice</h1>
       <p>provide 속성은 자식 컴포넌트에서 변경 가능(감지)</p>
       <ProvideInjectPractice />
@@ -72,14 +76,13 @@ import EventPractice from "@/components/EventPractice.vue";
 import VModelPractice from "@/components/VModelPractice.vue";
 import WatchPractice from "@/components/WatchPractice.vue";
 import PropsPractice from "@/components/props/PropsPractice.vue";
+import ButtonGroup from "@/components/slot/ButtonGroup.vue";
 import ProvideInjectPractice from "@/components/provide-inject/ProvideInjectPractice.vue";
 import TemplateRefPractice from "@/components/template-ref/TemplateRefPractice.vue";
 
 export default {
-  components: {
-    TemplateRefPractice,
-    ProvideInjectPractice,
-    PropsPractice, WatchPractice, VModelPractice, EventPractice, VMemoPractice, ComputedPractice},
+  components: {TemplateRefPractice,
+    ProvideInjectPractice,ButtonGroup, PropsPractice, WatchPractice, VModelPractice, EventPractice, VMemoPractice, ComputedPractice},
   /**setUp() hook은 Composition API 사용을 위한 진입점 역할
    * 컴포넌트 인스턴스가 *생성되기전*에 호출
    * 첫번째 매개변수에 props올 수 있음
