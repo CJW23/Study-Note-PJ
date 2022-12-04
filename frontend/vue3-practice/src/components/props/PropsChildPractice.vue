@@ -5,6 +5,19 @@
   <p>{{titles}}</p>
 </template>
 
+<!-- script setup 방식으로 옮김 -->
+<script setup>
+import {ref} from "vue";
+
+const emit = defineEmits(['emitTest', 'emitParamTest']);
+const emitParam = ref('');
+const titles = defineProps({
+    title: String
+  })
+  const clickEmitTest = () => emit('emitTest');
+  const clickEmitParamTest = () => emit('emitParamTest', emitParam.value)
+</script>
+<!--
 <script>
 import {ref} from "vue";
 
@@ -32,4 +45,4 @@ export default {
     }
   }
 }
-</script>
+</script>-->
