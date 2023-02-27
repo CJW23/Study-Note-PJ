@@ -14,6 +14,10 @@ public class Member {
 	@GeneratedValue
 	@Column(name = "member_id")	//컬럼 이름 지정, 지정 안할시 변수(id)값으로 지정
 	private Long id;
+
+	@Version
+	Integer version;
+
 	private String username;
 	private int age;
 
