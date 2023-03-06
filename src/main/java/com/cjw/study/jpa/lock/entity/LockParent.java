@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -25,12 +26,16 @@ public class LockParent {
     private long count;
 
     @OneToMany(mappedBy = "lockParent", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
-    private List<LockChild> lockChildren;
+    private List<LockChild> lockChildren = new ArrayList<>();
 
     public static LockParent ofDefault() {
         return LockParent.builder().count(0L).build();
     }
 
+    public void addLockChild(LockChild lockChild) {
+        this.lockChildren.add(lockChild);
+        lockChild.setLockParent(this);
+    }
     public void plusCount() {
         this.count += 1;
     }

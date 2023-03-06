@@ -26,4 +26,14 @@ public class LockChild {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "parent_id")
     private LockParent lockParent;
+
+    public void setLockParent(LockParent lockParent) {
+        this.lockParent = lockParent;
+    }
+
+    public static LockChild ofDefault() {
+        return LockChild.builder()
+                .count(0L)
+                .build();
+    }
 }

@@ -1,11 +1,16 @@
 package com.cjw.study.jpa.lock.service;
 
+import com.cjw.study.jpa.lock.entity.LockChild;
 import com.cjw.study.jpa.lock.entity.LockParent;
 import com.cjw.study.jpa.lock.repository.LockParentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
+import java.util.List;
 
 /**
  * None:
@@ -21,10 +26,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class LockTestService {
     private final LockParentRepository lockParentRepository;
+    private final EntityManager em;
+
     @Transactional
     public void insertLockParent() {
         LockParent lockParent = LockParent.ofDefault();
         this.lockParentRepository.save(lockParent);
+    }
+
+    @Transactional
+    public void insertLockChild(Long parentId) {
+        LockParent lockParent = this.lockParentRepository.findById(parentId).orElseThrow(() -> new RuntimeException(""));
+        lockParent.addLockChild(LockChild.ofDefault());
     }
 
     /**
@@ -48,5 +61,43 @@ public class LockTestService {
             throw new RuntimeException(e);
         }
         log.info("\nfindParentById 종료");
+    }
+
+    /**
+     * lockParent Version 증가
+     * lockChild Version 증가 X
+     */
+    @Transactional
+    public void findParentByIdForceIncrement(Long parentId) {
+        LockParent lockParent = this.em.find(LockParent.class, parentId, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
+        List<LockChild> lockChildren = lockParent.getLockChildren();
+    }
+
+    /**
+     * 모든 Parent Version 증가
+     */
+    @Transactional
+    public void findAllForceIncrement() {
+        List<LockParent> lockParents = this.lockParentRepository.findAll();
+    }
+
+    /**
+     * fetch join LockParent Version 같이 증가
+     */
+    @Transactional
+    public void findParentByIdWithChild(Long parentId) {
+        LockParent lockParent = this.lockParentRepository.findByIdWithChild(parentId);
+    }
+
+    /**
+     * 엔티티 값이 변경된 경우 Version 2 증가
+     * 값을 업데이트 하면서 한번 증가
+     * 트랜잭션이 끝나고 강제 한번 증가
+     * 총 2번
+     */
+    @Transactional
+    public void updateChildForceIncrement(Long parentId) {
+        LockParent lockParent = this.lockParentRepository.findByIdForceIncrement(parentId);
+        lockParent.plusCount();
     }
 }
