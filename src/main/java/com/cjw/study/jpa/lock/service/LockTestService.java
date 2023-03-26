@@ -96,8 +96,54 @@ public class LockTestService {
      * 총 2번
      */
     @Transactional
-    public void updateChildForceIncrement(Long parentId) {
+    public void updateParentForceIncrement(Long parentId) {
         LockParent lockParent = this.lockParentRepository.findByIdForceIncrement(parentId);
+        lockParent.plusCount();
+    }
+
+    /**
+     * PESSIMISTIC_READ 모드로 LockParent 읽은 후
+     * 0.5초 대기후 count Update
+     *
+     * 1. Transaction1 Select For Shared 구문 수행
+     * 2. Transaction2 Select For Shared 구문 수행
+     * 3. Transaction1 Update 수행 (Transaction2의 Shared Lock으로 인해 대기)
+     * 4. Transaction2 Update 수행 (Transaction1의 Shared Lock으로 인해 대기)
+     * 결과: 데드락 발생
+     */
+    @Transactional
+    public void findByParentIdPessimisticReadAndUpdate(Long parentId) {
+        LockParent lockParent = this.lockParentRepository.findByIdPessimisticRead(parentId);
+        //0.5초 대기
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        lockParent.plusCount();
+    }
+
+    /**
+     * PESSIMISTIC_WRITE 모드로 LockParent 읽은 후
+     * 0.5초 대기후 count Update
+     *
+     * 1.Transaction1 Select For Update 구문 수행
+     * 2.Transaction2 Select For Update 구문 수행 (Transaction1 X-Lock으로 인해 대기)
+     * 3.Transaction3 Select For Update 구문 수행 (Transaction1 X-Lock으로 인해 대기)
+     * 4.Transaction1 Update 수행(X-lock 해제)
+     * 5.Transaction2 Update 수행
+     * 6.Transaction3 Update 수행
+     * 결과: 3개의 트랜잭션 정상 처리
+     */
+    @Transactional
+    public void findByParentIdPessimisticWriteAndUpdate(Long parentId) {
+        LockParent lockParent = this.lockParentRepository.findByIdPessimisticWrite(parentId);
+        //0.5초 대기
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         lockParent.plusCount();
     }
 }

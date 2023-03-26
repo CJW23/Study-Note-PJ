@@ -46,11 +46,18 @@ public class LockTests {
         CompletableFuture.allOf(task2, task3).join();
     }
 
+    /**
+     * Parent 조회
+     * Version 1 증가
+     */
     @Test
-    void Lock_Optimistic_Force_Increment() {
+    void Lock_Optimistic_Force_Increment_Find_Parent() {
         this.lockTestService.findParentByIdForceIncrement(1L);
     }
 
+    /**
+     *
+     */
     @Test
     void Lock_Optimistic_Force_Increment_Find_All() {
         this.lockTestService.findAllForceIncrement();
@@ -63,6 +70,41 @@ public class LockTests {
 
     @Test
     void Lock_Optimistic_Force_Increment_Update() {
-        this.lockTestService.updateChildForceIncrement(1L);
+        this.lockTestService.updateParentForceIncrement(1L);
+    }
+
+    /**
+     * PESSIMISTIC_READ 모드로 동시성으로 두개의 트랜잭션이 Shared Lock 잡으면
+     * Update 수행시 데드락 발생
+     */
+    @Test
+    void Lock_Pessimistic_Read_Find_And_Update() {
+        CompletableFuture<Void> task1 = CompletableFuture.runAsync(() -> {
+            this.lockTestService.findByParentIdPessimisticReadAndUpdate(1L);
+        });
+        CompletableFuture<Void> task2 = CompletableFuture.runAsync(() -> {
+            this.lockTestService.findByParentIdPessimisticReadAndUpdate(1L);
+        });
+
+        CompletableFuture.allOf(task1, task2).join();
+    }
+
+    /**
+     * PESSIMISTIC_READ 모드로 동시성으로 두개의 트랜잭션이 Shared Lock 잡으면
+     * Update 수행시 데드락 발생
+     */
+    @Test
+    void Lock_Pessimistic_Write_Find_And_Update() {
+        CompletableFuture<Void> task1 = CompletableFuture.runAsync(() -> {
+            this.lockTestService.findByParentIdPessimisticWriteAndUpdate(1L);
+        });
+        CompletableFuture<Void> task2 = CompletableFuture.runAsync(() -> {
+            this.lockTestService.findByParentIdPessimisticWriteAndUpdate(1L);
+        });
+        CompletableFuture<Void> task3 = CompletableFuture.runAsync(() -> {
+            this.lockTestService.findByParentIdPessimisticWriteAndUpdate(1L);
+        });
+
+        CompletableFuture.allOf(task1, task2, task3).join();
     }
 }

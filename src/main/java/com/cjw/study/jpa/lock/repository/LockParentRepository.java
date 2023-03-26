@@ -31,4 +31,17 @@ public interface LockParentRepository extends JpaRepository<LockParent, Long> {
     @Query("SELECT lp FROM LockParent lp WHERE lp.parentId = :parentId")
     @Lock(LockModeType.OPTIMISTIC_FORCE_INCREMENT)
     LockParent findByIdForceIncrement(@Param("parentId") Long parentId);
+
+    @Query("SELECT lp FROM LockParent lp where lp.parentId = :parentId")
+    @Lock(LockModeType.PESSIMISTIC_READ)
+    LockParent findByIdPessimisticRead(@Param("parentId") Long parentId);
+
+    @Query("SELECT lp FROM LockParent lp where lp.parentId = :parentId")
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    LockParent findByIdPessimisticWrite(@Param("parentId") Long parentId);
+
+    @Query("SELECT lp FROM LockParent lp where lp.parentId = :parentId")
+    @Lock(LockModeType.PESSIMISTIC_FORCE_INCREMENT)
+    LockParent findByIdPessimisticForceIncrement(@Param("parentId") Long parentId);
 }
+
