@@ -20,8 +20,8 @@ public class LockParent {
     @Column(name = "parent_id", nullable = false)
     private Long parentId;
 
-    /*@Version
-    private Integer version;*/
+    @Version
+    private Integer version;
 
     private long count;
 

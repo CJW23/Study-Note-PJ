@@ -18,8 +18,8 @@ public class LockChild {
     @Column(name = "child_id", nullable = false)
     private Long childId;
 
-    /*@Version
-    private Integer version;*/
+    @Version
+    private Integer version;
 
     private Long count;
 

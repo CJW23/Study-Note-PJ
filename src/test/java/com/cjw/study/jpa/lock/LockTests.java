@@ -107,4 +107,19 @@ public class LockTests {
 
         CompletableFuture.allOf(task1, task2, task3).join();
     }
+
+    @Test
+    void Lock_Pessimistic_Force_Increment_Find() {
+        CompletableFuture<Void> task1 = CompletableFuture.runAsync(() -> {
+            this.lockTestService.findByParentByIdWithChildPessimisticForceIncrement(1L);
+        });
+        CompletableFuture<Void> task2 = CompletableFuture.runAsync(() -> {
+            this.lockTestService.findByParentByIdWithChildPessimisticForceIncrement(1L);
+        });
+        CompletableFuture<Void> task3 = CompletableFuture.runAsync(() -> {
+            this.lockTestService.findByParentByIdWithChildPessimisticForceIncrement(1L);
+        });
+
+        CompletableFuture.allOf(task1, task2, task3).join();
+    }
 }

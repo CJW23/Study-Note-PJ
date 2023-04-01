@@ -40,7 +40,7 @@ public interface LockParentRepository extends JpaRepository<LockParent, Long> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     LockParent findByIdPessimisticWrite(@Param("parentId") Long parentId);
 
-    @Query("SELECT lp FROM LockParent lp where lp.parentId = :parentId")
+    @Query("SELECT lp FROM LockParent lp join fetch lp.lockChildren where lp.parentId = :parentId")
     @Lock(LockModeType.PESSIMISTIC_FORCE_INCREMENT)
     LockParent findByIdPessimisticForceIncrement(@Param("parentId") Long parentId);
 }

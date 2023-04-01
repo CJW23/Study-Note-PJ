@@ -146,4 +146,9 @@ public class LockTestService {
         }
         lockParent.plusCount();
     }
+
+    @Transactional
+    public void findByParentByIdWithChildPessimisticForceIncrement(Long parentId) {
+        LockParent lockParent = this.lockParentRepository.findByIdPessimisticForceIncrement(parentId);
+    }
 }
