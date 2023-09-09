@@ -19,7 +19,7 @@ public class RestDocsDto {
         private LocalDateTime param3;
     }
 
-    @Builder
+    @Builder 
     @AllArgsConstructor
     @Getter
     public static class Test2 {

@@ -4,6 +4,13 @@ spring:
   datasource:
     hikari:
       driver-class-name: com.mysql.cj.jdbc.Driver
+      idle-timeout: 100000
+      max-lifetime: 100000
+      maximum-pool-size: 10
+      #maximumPoolSize보다 작으면 트래픽이 없다가 최대 커넥션까지 차는 순간에 max - miniIdle 만큼 커넥션을 새로 생성?
+      minimum-idle: 10
+      leak-detection-threshold: 29000
+      connection-timeout: 30000 #default 30초
     url: jdbc:mysql://localhost:3306/jpa?serverTimezone=UTC&characterEncoding=UTF-8
     username: root
     password: awdsd123
