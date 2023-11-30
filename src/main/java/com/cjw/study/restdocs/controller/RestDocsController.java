@@ -37,4 +37,9 @@ public class RestDocsController {
 
         return ResponseEntity.ok().body(test2);
     }
+
+    @GetMapping("/test3")
+    public ResponseEntity<String> test3() {
+        return ResponseEntity.ok().body("test3");
+    }
 }
